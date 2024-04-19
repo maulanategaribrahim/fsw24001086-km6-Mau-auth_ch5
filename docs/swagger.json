@@ -1,0 +1,1451 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Challenge FSW 2 Chapter 5",
+    "description": "ini challenge kami",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "ini adalah API untuk Authorization resources"
+    },
+    {
+      "name": "Users",
+      "description": "ini API untuk USERS resources"
+    },
+    {
+      "name": "Cars",
+      "description": "ini API untuk CARS resources"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit API login user",
+        "description": "ini API utk login user",
+        "requestBody": {
+          "description": "ini request body utk sukses login user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "tegaribra@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "diriku"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "GWHUHGUAWHGUAHGIAWBGVIAHWBVIAW"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal User login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "wrong password atau user gak ada"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/member/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Return hasil hit api register member",
+        "description": "ini API utk register member",
+        "requestBody": {
+          "description": "ini request body utk sukses register member",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "dikichan"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "mabarges"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "dikich@mail.com"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "mabarges"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 24
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Surabaya"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses register member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "dikichan"
+                        },
+                        "age": {
+                          "type": "integer",
+                          "example": "24"
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "Surabaya"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "member"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "dikich@mail.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal Member register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User email already taken"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/admin/register": {
+      "post": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api register admin (hanya superadmin)",
+        "description": "ini API untuk register admin dan hanya superadmin yang memiliki akses untuk registrasi admin baru",
+        "requestBody": {
+          "description": "ini request body untuk sukses register admin",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "hinata"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "hinatacantik"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "hinata@mail.com"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "hinatacantik"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 24
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "Jepang"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses register admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "hinata"
+                        },
+                        "age": {
+                          "type": "integer",
+                          "example": "24"
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "Jepang"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "admin"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "hinata@mail.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal register admin (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal register admin (bukan superadmin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api Verify User untuk semua role",
+        "description": "ini adalah API untuk mengambil informasi user",
+        "responses": {
+          "200": {
+            "description": "Sukses verify User, berhasil mendapatkan informasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Aku"
+                            },
+                            "age": {
+                              "type": "integer",
+                              "example": 23
+                            },
+                            "address": {
+                              "type": "string",
+                              "example": "Korea"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "superadmin"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "aku@mail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "example": "$gahsg$$$GASJB$YUAghjasyd$$gHS$"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Gagal Verifikasi User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api get all users data (hanya superadmin dan admin)",
+        "description": "ini API untuk menampilkan data dari semua user yang ada, hanya superadmin dan admin yang memiliki akses",
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan data user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user1": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 2
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "hinata"
+                            },
+                            "age": {
+                              "type": "integer",
+                              "example": "24"
+                            },
+                            "address": {
+                              "type": "string",
+                              "example": "Jepang"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "superadmin"
+                            }
+                          }
+                        },
+                        "user2": {
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Adel"
+                            },
+                            "age": {
+                              "type": "integer",
+                              "example": "21"
+                            },
+                            "address": {
+                              "type": "string",
+                              "example": "Korea"
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "admin"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal menampilkan data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menampilkan data (bukan superadmin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api  get user by id (hanya superadmin dan admin)",
+        "description": "ini API untuk menampilkan satu data user berdasarkan id, hanya superadmin dan admin yang memiliki akses",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID user yang akan ditampilkan.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sukses menampilkan data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "hinata"
+                        },
+                        "age": {
+                          "type": "integer",
+                          "example": 24
+                        },
+                        "address": {
+                          "type": "string",
+                          "example": "Jepang"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "superadmin"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal menampilkan data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada / data dengan id 9 tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menampilkan data (bukan superadmin/admin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/edit/{id}": {
+      "patch": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api patch data user",
+        "description": "ini adalah API untuk memperbarui informasi user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID user yang akan diubah.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk edit data user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "hinata"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses memperbarui data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses update user "
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal memperbarui data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada / data dengan id 9 tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/delete/{id}": {
+      "delete": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api patch data user (hanya superadmin dan admin)",
+        "description": "ini adalah API untuk  menghapus data user berdasarkan id, hanya superadmin dan admin yang bisa mengakses",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID user yang akan dihapus.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses memnghapus data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses delete user "
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal memperbarui data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada / data dengan id 9 tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menghapus data (bukan superadmin/admin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api cars (hanya superadmin dan admin)",
+        "description": "ini API untuk create car ",
+        "requestBody": {
+          "description": "ini request body untuk sukses car",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "BMW"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 250000
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "FA120"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "small"
+                  },
+
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses create car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 2
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "BMW"
+                        },
+                        "price": {
+                          "type": "integer",
+                          "example": 250000
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "FA120"
+                        },
+                        "category": {
+                          "type": "string",
+                          "example": "small"
+                        },
+                        "imageURL": {
+                          "type": "string",
+                          "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal create car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "nama car sudah ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal create car (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal create car (bukan superadmin/admin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/": {
+      "get": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api get all cars data (hanya superadmin dan admin)",
+        "description": "ini API untuk menampilkan data dari semua cars yang ada, hanya superadmin dan admin yang memiliki akses",
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan data cars",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car1": {
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "BMW"
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "type": {
+                              "type": "string",
+                              "example": "FA120"
+                            },
+                            "category": {
+                              "type": "string",
+                              "example": "small"
+                            },
+                            "imageURL": {
+                              "type": "string",
+                              "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
+                            }
+                          }
+                        },
+                        "car2": {
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Bus"
+                            },
+                            "price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "type": {
+                              "type": "string",
+                              "example": "FA120"
+                            },
+                            "category": {
+                              "type": "string",
+                              "example": "large"
+                            },
+                            "imageURL": {
+                              "type": "string",
+                              "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal menampilkan data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menampilkan data (bukan superadmin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api  get car by id (hanya superadmin dan admin)",
+        "description": "ini API untuk menampilkan satu data car berdasarkan id, hanya superadmin dan admin yang memiliki akses",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID car yang ingin ditampilkan.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sukses menampilkan data",
+
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "BMW"
+                        },
+                        "price": {
+                          "type": "integer",
+                          "example": 250000
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "FA120"
+                        },
+                        "category": {
+                          "type": "string",
+                          "example": "small"
+                        },
+                        "imageURL": {
+                          "type": "string",
+                          "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal menampilkan data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada / data dengan id 9 tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menampilkan data (bukan superadmin/admin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/edit/{id}": {
+      "patch": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api patch data car (hanya superadmin dan admin)",
+        "description": "ini adalah API untuk memperbarui data car",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID car yang akan diubah.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk edit data car",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Sedan"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "example": 250000
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "FA120"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "small"
+                  },
+
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses memperbarui data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses update car "
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal update car (duplikat)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "nama car sudah ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal memperbarui data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada / data dengan id 9 tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menghapus data (bukan superadmin/admin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/delete/{id}": {
+      "delete": {
+        "tags": ["Cars"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit api delete car (hanya superadmin dan admin)",
+        "description": "ini adalah API untuk  menghapus data car berdasarkan id, hanya superadmin dan admin yang bisa mengakses",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID car yang akan dihapus.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menghapus data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "sukses delete car"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal menghapus data (unauthorized)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "token nya gak ada / data dengan id 9 tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal menghapus data (bukan superadmin/admin)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "kamu bukan superadmin/admin jadi tidak bisa akses"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
