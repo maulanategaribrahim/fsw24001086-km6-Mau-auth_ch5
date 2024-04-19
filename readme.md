@@ -48,6 +48,6 @@ Catatan : Anda memerlukan tools berikut untuk menyelesaikan instalasi.
 
 ### Dokumentasi API
 
-Port server di projek ini diatur di Port : 8000
+Port server di projek ini diatur di Port : 3000
 
-Setelah proyek berjalan, Anda cukup membuka http://localhost:8000/api-docs/. Sekarang Anda dapat melihat dan menjelajahi semua endpoint yang ada pada proyek ini yang telah didokumentasikan menggunakan swagger.
+Setelah proyek berjalan, Anda cukup membuka http://localhost:3000/api-docs/. Sekarang Anda dapat melihat dan menjelajahi semua endpoint yang ada pada proyek ini yang telah didokumentasikan menggunakan swagger.
